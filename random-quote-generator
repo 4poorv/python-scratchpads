@@ -1,0 +1,50 @@
+import pyquotegen
+import streamlit as st
+
+BACKGROUND_IMAGE_LINK = 'https://www.pexels.com/photo/4318236/download'
+
+# Set the page config to widen the app, and set a title and icon
+st.set_page_config(layout="wide", page_title="Random Quote Generator", page_icon=":speech_balloon:")
+
+# Use HTML to set a background image and additional styles
+
+st.markdown(f"""
+<style>
+.stApp {{
+    background: url({BACKGROUND_IMAGE_LINK});
+    background-size: cover;
+    font-family: 'Google Sans', sans-serif;  # Applying Google Sans font
+}}
+.big-font {{
+    font-size:30px !important;
+    font-style: italic;
+    text-align: center;
+}}
+.vertical-center {{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+}}
+.st-eb {{
+    width: 50%;
+    margin: 0 auto;
+}}
+</style>
+""", unsafe_allow_html=True)
+
+
+# Function to get and display a quote
+def display_quote(category=None):
+    quote = pyquotegen.get_quote(category) if category else pyquotegen.get_quote()
+    st.markdown(f'<div class="vertical-center"><p class="big-font">{quote}</p></div>', unsafe_allow_html=True)
+
+
+# Add a select box for category selection
+category = st.selectbox(label="Select a category", label_visibility='hidden',
+                        options=['inspirational', 'motivational', 'funny', 'nature', 'success', 'attitude', 'coding', 'friendship', 'technology'],
+                        key='category_select')
+
+# Display the quote from the selected category
+if category:
+    display_quote(category)
